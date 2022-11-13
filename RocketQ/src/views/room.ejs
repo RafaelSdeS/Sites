@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <!--METAS-->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--STYLES-->
+    <link rel="stylesheet" href="/styles/global.css" />
+    <link rel="stylesheet" href="/styles/room.css" />
+    <link rel="stylesheet" href="/styles/modal.css" />
+
+    <!--FONTS-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Poppins:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>Perguntas e Respostas - Rocket.q</title>
+  </head>
+  <body>
+    <div id="room" class="content">
+      <header>
+        <a href="/">
+          <img src="/images/logo.svg" alt="Logo" />
+        </a>
+        <div class="buttons">
+          <div class="button outlined" id="room-id" data-id="<%= roomId %>">
+            #<%= roomId %>
+            <img src="/images/copy.svg" alt="Copiar senha" />
+          </div>
+          <a href="/create-pass" class="button">
+            <img src="/images/users-white.svg" alt="Criar sala" />
+            Criar Sala
+          </a>
+        </div>
+      </header>
+
+      <main>
+        <section id="question-form">
+          <h2>Faça sua pergunta</h2>
+          <form action="/question/create/<%= roomId%>" method="post">
+            <label class="sr-only" for-id="question"
+              >O que você quer perguntar?</label
+            >
+            <textarea
+              name="question"
+              id="question"
+              placeholder="O que você quer perguntar?"
+            ></textarea>
+            <footer>
+              <div>
+                <img src="/images/locker.svg" />
+                Esta pergunta é anônima
+              </div>
+              <button>Enviar</button>
+            </footer>
+          </form>
+        </section>
+        <section id="questions">
+          <h2 class="sr-only">Perguntas da comunidade</h2>
+          <div class="questions">
+            <% if(isNoQuestions){ %> <%- include('parts/no-questions')%> <% } %>
+            <% questions.forEach(question => {%>
+            <div class="question-wrapper">
+              <div class="question-content">
+                <div class="user">
+                  <img src="/images/user.svg" alt="Usuário" />
+                </div>
+                <div class="question">
+                  <p><%= question.title %></p>
+                </div>
+              </div>
+              <div class="actions">
+                <a class="check" href="#" data-id="<%= question.id%>">
+                  <img src="/images/check.svg" alt="Marcar como lida" />
+                  Marcar como lida
+                </a>
+                <a href="#" class="delete" data-id="<%= question.id%>">
+                  <img src="/images/trash.svg" alt="Excluir" />
+                  Excluir
+                </a>
+              </div>
+            </div>
+            <% }) %> <% questionsRead.forEach(questionRead => {%>
+            <div class="question-wrapper read">
+              <div class="question-content">
+                <div class="user">
+                  <img src="/images/user.svg" alt="Usuário" />
+                </div>
+                <div class="question">
+                  <p><%= questionRead.title%></p>
+                </div>
+              </div>
+              <div class="actions">
+                <a href="#" class="delete" data-id="<%= questionRead.id%>">
+                  <img src="/images/trash.svg" alt="Excluir" />
+                  Excluir
+                </a>
+              </div>
+            </div>
+            <%})%>
+          </div>
+        </section>
+      </main>
+    </div>
+    <!--MODAL-->
+    <div class="modal-wrapper">
+      <div class="modal">
+        <h2>Excluir</h2>
+        <p>Tem certeza?</p>
+        <form action="#" method="post">
+          <label class="sr-only" for-id="password">Digite sua senha</label>
+          <input
+            type="password"
+            name="password"
+            placeholder="Digite sua senha"
+            id="password"
+          />
+          <div class="buttons">
+            <div class="button grey cancel">Cancelar</div>
+            <button class="red">Sim, excluir</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script src="/scripts/main.js" defer type="module"></script>
+</html>
